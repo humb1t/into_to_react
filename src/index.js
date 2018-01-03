@@ -4,7 +4,8 @@ import './index.css';
 
 function Square(props) {
       return (
-        <button className="square" onClick={props.onClick}>
+        <button className="square"  onClick={props.onClick}>
+          {props.highlited ? '*' : ''}
           {props.value}
         </button>
       );
@@ -12,17 +13,20 @@ function Square(props) {
   
   class Board extends React.Component {
 
-    renderSquare(i) {
+    renderSquare(i, highlited) {
       return (
-      <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)} />
+      <Square value={this.props.squares[i]} highlited={highlited} onClick={() => this.props.onClick(i)} />
       );
     }
 
     renderRow(index) {
       const colCount = 3;
       let columns = [];
+      const winnerCells = calculateWinner(this.props.squares);
       for (let i = 0; i < colCount; i++) {
-        columns.push(this.renderSquare(index * colCount + i));            
+        const cellNumber = index * colCount + i;
+        const highlited = (winnerCells ? winnerCells.find((value) => {return value === cellNumber }) : false);
+        columns.push(this.renderSquare(cellNumber, highlited));            
       }
       return (
           <div className="board-row">
@@ -121,7 +125,7 @@ function Square(props) {
       );
       let status;
       if (winner) {
-        status = 'The winner is: ' + winner;
+        status = 'The winner is: ' + winner[3];
       } else {
         status = 'Next player is: ' + this.state.xIsNext ? 'X' : 'O';
       }
@@ -155,7 +159,8 @@ function Square(props) {
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+        lines[i].push(squares[a]);
+        return lines[i];
       }
     }
     return null;
