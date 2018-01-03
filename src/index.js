@@ -96,7 +96,10 @@ function Square(props) {
         (step, move) => {
           const row = Math.ceil((step.location + 1) / 3);
           const column = step.location +1 - (row -1) *3;
-          const desc = move ? 'Go to move #' + move +'(' + row  +',' + column + ')' : 'Go to game start';
+          let desc = move ? 'Go to move #' + move +'(' + row  +',' + column + ')' : 'Go to game start';
+          if (move === this.state.stepNumber){
+            desc = (<b> {desc} </b>);
+          }
           return (
             <li key={move}>
               <button onClick={() => this.jumpTo(move)}>{desc}</button>
