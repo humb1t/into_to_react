@@ -17,25 +17,28 @@ function Square(props) {
       <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)} />
       );
     }
-  
+
+    renderRow(index) {
+      const colCount = 3;
+      let columns = [];
+      for (let i = 0; i < colCount; i++) {
+        columns.push(this.renderSquare(index * colCount + i));            
+      }
+      return (
+          <div className="board-row">
+            {columns}
+          </div>
+      )
+    }
+
     render() {
+      let rows = [];
+      for (let index = 0; index < 3; index++) {
+        rows.push(this.renderRow(index));
+      }
       return (
         <div>
-          <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
-          </div>
+          {rows}
         </div>
       );
     }
