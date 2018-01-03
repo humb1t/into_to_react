@@ -55,8 +55,17 @@ function Square(props) {
           }
         ],
         stepNumber: 0,
-            xIsNext: true,
+        xIsNext: true,
+        movesSort: 'asc',
       };
+    }
+
+    toogleSort(){
+      this.setState(
+        {
+          movesSort: this.state.movesSort === 'asc' ? 'desc' : 'asc',
+        }
+      );
     }
 
     handleClick(i){
@@ -116,6 +125,7 @@ function Square(props) {
       } else {
         status = 'Next player is: ' + this.state.xIsNext ? 'X' : 'O';
       }
+      const sortedMoves = this.state.movesSort === 'asc' ? moves : moves.reverse(); 
       return (
         <div className="game">
           <div className="game-board">
@@ -123,7 +133,8 @@ function Square(props) {
           </div>
           <div className="game-info">
             <div>{status}</div>
-            <ol>{moves}</ol>
+            <button onClick={() => this.toogleSort()}>Toogle moves</button>
+            <ol>{sortedMoves}</ol>
           </div>
         </div>
       );
